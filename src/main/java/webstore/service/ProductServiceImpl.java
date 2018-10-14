@@ -6,6 +6,7 @@ import webstore.domain.Product;
 import webstore.repository.ProductRepository;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -26,5 +27,20 @@ public class ProductServiceImpl implements ProductService{
     public List<Product> getAllProducts() {
         List<Product> result = productRepository.getAllProducts();
         return result;
+    }
+
+    @Override
+    public List<Product> getProductsByCategory(String category) {
+        return productRepository.getProductsByCategory(category);
+    }
+
+    @Override
+    public List<Product> getProductsByFilter(Map<String, List<String>> filterParams) {
+        return productRepository.getProductsByFilter(filterParams);
+    }
+
+    @Override
+    public Product getProductById(String productID) {
+        return productRepository.getProductById(productID);
     }
 }
