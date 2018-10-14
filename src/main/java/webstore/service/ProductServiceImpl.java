@@ -21,4 +21,10 @@ public class ProductServiceImpl implements ProductService{
                     product.getUnitsInStock()+1000);
         }
     }
+
+    @Override
+    public List<Product> getAllProducts() {
+        List<Product> result = productRepository.getAllProducts();
+        return result;
+    }
 }
