@@ -12,5 +12,6 @@ public interface ProductRepository {
     List<Product> getProductsByCategory(String category);
     List<Product> getProductsByFilter(Map<String, List<String>> filterParams);
     Product getProductById(String productID);
-    String filterProducts(String productCategory, Map<String, List<String>> filterParams, String brand);
+    List<Product> getProductsByManyParams(String productCategory, Map<String, List<String>> filterParams,
+                                          String productBrand);
 }

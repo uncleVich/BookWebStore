@@ -3,10 +3,7 @@ package webstore.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.MatrixVariable;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import webstore.service.ProductService;
 
 import java.util.List;
@@ -43,17 +40,20 @@ public class ProductController {
         model.addAttribute("product", productService.getProductById(productId));
         return "product";
     }
-    @RequestMapping("/products/{category}/{params}")
-    public String filterProducts(Model model, @PathVariable("category") String productCategory,
-                                 @MatrixVariable(pathVar = "params") Map<String, List<String>> filterParams,
-                                 @RequestParam("brand") String brand){
-        model.addAttribute("products", productService);
-        return "products";
-    }
 
     @RequestMapping("/update/stock")
     public String updateStock(Model model) {
         productService.updateAllStock();
         return "redirect:/products";
+    }
+
+    @RequestMapping("/products/{category}/{params}")
+    public String filterProducts(@PathVariable("category") String productCategory,
+                                 @MatrixVariable(pathVar = "params") Map<String, List<String>> filterParams,
+                                 @RequestParam("brand") String productBrand,
+                                 Model model) {
+        model.addAttribute("products", productService.getProductsByManyParams(productCategory,
+                filterParams, productBrand));
+        return "products";
     }
 }

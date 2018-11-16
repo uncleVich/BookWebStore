@@ -8,6 +8,7 @@ import webstore.domain.Product;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,10 +61,16 @@ public class InMemoryProductRepository implements ProductRepository {
     }
 
     @Override
-    public String filterProducts(String productCategory, Map<String, List<String>> filterParams, String brand) {
-        String SQL = "SELECT * FROM PRODUCTS WHERE CATEGORY IN ( : )";
+    public List<Product> getProductsByManyParams(String productCategory, Map<String,
+            List<String>> filterParams, String productBrand) {
+        String SQL = "SELECT * FROM PRODUCTS WHERE CATEGORY  = :category " +
+                " AND MANUFACTURER = :brand AND (UNIT_PRICE BETWEEN :low  AND :high )";
+        Map<String, Object> params = new HashMap<>();
+        params.put("category", productCategory);
+        params.put("brand", productBrand);
+        params.putAll(filterParams);
 
-        return jdbcTemplate.query();
+        return jdbcTemplate.query(SQL, params, new ProductMapper());
     }
 
     private static final class ProductMapper implements RowMapper<Product> {
